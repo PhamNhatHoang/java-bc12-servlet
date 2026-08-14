@@ -7,10 +7,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.cybersoft.service.LoginService;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    
+    // Khởi tạo LoginService để xử lý logic
+    private LoginService loginService = new LoginService();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -32,8 +36,10 @@ public class LoginServlet extends HttpServlet {
         out.println("<body>");
         out.println("    <h2>Kết quả đăng nhập</h2>");
         
-        // Compare username và password giả lập
-        if ("admin".equals(username) && "123".equals(password)) {
+        // Gọi LoginService để check login logic
+        boolean isSuccess = loginService.checkLogin(username, password);
+        
+        if (isSuccess) {
             out.println("    <h3 style='color:green;'>Đăng nhập thành công!</h3>");
             out.println("    <p>Chào mừng tài khoản: <strong>" + username + "</strong></p>");
         } else {
